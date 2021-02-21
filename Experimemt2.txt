@@ -1,0 +1,69 @@
+PART-2
+EXPERIMENT 2
+
+1. ANSWER: For the timeout 0.5 seconds, the write and delete RPC calls were unsuccessful. The write call reported a Deadline exceeded error whereas the Delete call showed a Delete Aborted error. The List RPC worked fine.
+
+For timeout 1.5 seconds, the Write and Delete and List RPC, all three worked without any error.
+
+2. The lists in both cases were different. In the timeout 0.5 seconds case, the List had the element with key = 'Key1'. This is because the client timed-out before the rite operation was successful and tried to delete an empty key. This is why Delete did not work and the Write operation's value remained in the database.
+For the timeout 1.5 seconds case, the List was empty. This is becuase both the Write and Delete operations worked fine becuase of the longer timeout gap.
+
+
+
+OUTPUTS:
+
+TIMEOUT-0.5 sec:
+
+(grpc) Anmols-MacBook-Air:goup9 siddharth$ python client.py -timeout 0.5
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+	debug_error_string = "{"created":"@1613728220.163672000","description":"Error received from peer ipv6:[::1]:50050","file":"src/core/lib/surface/call.cc","file_line":1068,"grpc_message":"Deadline Exceeded","grpc_status":4}"
+>
+None
+Delete result:
+status {
+  server_id: 1
+  error: "Delete aborted. Key not present Key1"
+}
+
+-------------------------------------------------------------------
+List result:
+status {
+  server_id: 1
+  ok: true
+}
+entries {
+  key: "Key1"
+  value: "Value1"
+  current_version: 1
+}
+
+
+TIMEOUT - 1.5 sec:
+
+(grpc) Anmols-MacBook-Air:goup9 siddharth$ python client.py -timeout 1.5
+Write result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key1"
+new_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key1"
+deleted_value: "Value1"
+deleted_version: 1
+
+-------------------------------------------------------------------
+List result:
+status {
+  server_id: 1
+  ok: true
+}

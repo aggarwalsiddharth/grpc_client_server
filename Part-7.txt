@@ -1,0 +1,122 @@
+
+1. On killing the server1, the RPCs that were meant for server 1 crashed and only the ones meant for server 2 got executed. 
+
+2. The problem of a server getting crashed is common and leads to many problems.One way to deal with the problem is to identify what is causing the server to crash. Here the error in the status is UNAVAILABLE. This clearly tells that server is not connected. Using this, we can get a clue of what is the problem and fix it.
+Secondly, for real systems the server's back up could be important. Making provisions for server failure in case it happens can be advantageous. When a server is unavailable, some other auxiliary server must be present to take its place.
+
+
+OUTPUT:
+
+(grpc) Anmols-MacBook-Air:goup9 siddharth$ python client2.py
+Write result:
+status {
+  server_id: 2
+  ok: true
+}
+key: "ShardKey0"
+new_version: 1
+
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses"
+	debug_error_string = "{"created":"@1613729021.119881000","description":"Failed to pick subchannel","file":"src/core/ext/filters/client_channel/client_channel.cc","file_line":5391,"referenced_errors":[{"created":"@1613729021.119880000","description":"failed to connect to all addresses","file":"src/core/ext/filters/client_channel/lb_policy/pick_first/pick_first.cc","file_line":398,"grpc_status":14}]}"
+>
+None
+Write result:
+status {
+  server_id: 2
+  ok: true
+}
+key: "ShardKey2"
+new_version: 1
+
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses"
+	debug_error_string = "{"created":"@1613729021.121425000","description":"Failed to pick subchannel","file":"src/core/ext/filters/client_channel/client_channel.cc","file_line":5391,"referenced_errors":[{"created":"@1613729021.119880000","description":"failed to connect to all addresses","file":"src/core/ext/filters/client_channel/lb_policy/pick_first/pick_first.cc","file_line":398,"grpc_status":14}]}"
+>
+None
+Write result:
+status {
+  server_id: 2
+  ok: true
+}
+key: "ShardKey4"
+new_version: 1
+
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses"
+	debug_error_string = "{"created":"@1613729021.122830000","description":"Failed to pick subchannel","file":"src/core/ext/filters/client_channel/client_channel.cc","file_line":5391,"referenced_errors":[{"created":"@1613729021.119880000","description":"failed to connect to all addresses","file":"src/core/ext/filters/client_channel/lb_policy/pick_first/pick_first.cc","file_line":398,"grpc_status":14}]}"
+>
+None
+Write result:
+status {
+  server_id: 2
+  ok: true
+}
+key: "ShardKey6"
+new_version: 1
+
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses"
+	debug_error_string = "{"created":"@1613729021.124264000","description":"Failed to pick subchannel","file":"src/core/ext/filters/client_channel/client_channel.cc","file_line":5391,"referenced_errors":[{"created":"@1613729021.119880000","description":"failed to connect to all addresses","file":"src/core/ext/filters/client_channel/lb_policy/pick_first/pick_first.cc","file_line":398,"grpc_status":14}]}"
+>
+None
+Write result:
+status {
+  server_id: 2
+  ok: true
+}
+key: "ShardKey8"
+new_version: 1
+
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses"
+	debug_error_string = "{"created":"@1613729021.125749000","description":"Failed to pick subchannel","file":"src/core/ext/filters/client_channel/client_channel.cc","file_line":5391,"referenced_errors":[{"created":"@1613729021.119880000","description":"failed to connect to all addresses","file":"src/core/ext/filters/client_channel/lb_policy/pick_first/pick_first.cc","file_line":398,"grpc_status":14}]}"
+>
+None
+List result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "failed to connect to all addresses"
+	debug_error_string = "{"created":"@1613729021.126026000","description":"Failed to pick subchannel","file":"src/core/ext/filters/client_channel/client_channel.cc","file_line":5391,"referenced_errors":[{"created":"@1613729021.119880000","description":"failed to connect to all addresses","file":"src/core/ext/filters/client_channel/lb_policy/pick_first/pick_first.cc","file_line":398,"grpc_status":14}]}"
+>
+None
+List result:
+status {
+  server_id: 2
+  ok: true
+}
+entries {
+  key: "ShardKey0"
+  value: "Value0"
+  current_version: 1
+}
+entries {
+  key: "ShardKey2"
+  value: "Value2"
+  current_version: 1
+}
+entries {
+  key: "ShardKey4"
+  value: "Value4"
+  current_version: 1
+}
+entries {
+  key: "ShardKey6"
+  value: "Value6"
+  current_version: 1
+}
+entries {
+  key: "ShardKey8"
+  value: "Value8"
+  current_version: 1
+}

@@ -1,0 +1,281 @@
+PART - 2
+
+EXPERIMENT -1 
+
+PART A. 
+Start a client and on the client side
+Send 5 RPCs to the server with a timeout of 0.5 second
+Sleep for 5 seconds
+Send a List RPC
+Send 5 RPCs at the end to blindly delete all 5 keys
+
+
+ANSWERS:
+A) The 5 Write RPCs were unsuccessful. They were returned with following:
+
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+
+LIST RPC was successful and so were the DELETE RPCs.
+
+Thus, 5 were unsuccessful and 6 were successful.
+
+
+PART B.
+Start a client and on the client side
+Send 5 RPCs to the server with a timeout of 1.5 second
+Send a List RPC
+Send 5 RPCs at the end to blindly delete all 5 keys
+
+
+ANSWERS:
+A) For this part, all 5 Write RPCs were successful.
+   The List RPC was also successful. The Delete RPCs were also successful.
+Thus, 0 unsuccessful RPCs and 11 successful RPCs.
+
+B) The numbers are different for both the scenarios. This is because of the timeout which was different for both the parts. For the first case the timeout was less: only 0.5 seconds. Thus after making the request, the client waited for only 0.5 seconds. But we initialised a delay of 1 second in our Write RPC server. Thus there was an error. Client responded without waiting for the server's response.
+
+In the second case, when timeout was increased to 1.5 seconds, the client waited enough time to get a response back from the server and hence there was no error or unsuccessful RPCs.
+
+C)The List in both cases were the same. This is because the operation was anyways performed. The only difference is that the client did not get the response of the server after the action was performed in the 1st case. It timed-out before getting the success notification. Whereas in the second case, the client waited and got the success response. The operations were anyways performed.
+
+
+OUTPUTS FROM CLIENT:
+PART-A:
+
+(grpc) Anmols-MacBook-Air:goup9 siddharth$ python client.py -timeout 0.5
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+	debug_error_string = "{"created":"@1613727457.661778000","description":"Error received from peer ipv6:[::1]:50050","file":"src/core/lib/surface/call.cc","file_line":1068,"grpc_message":"Deadline Exceeded","grpc_status":4}"
+>
+None
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+	debug_error_string = "{"created":"@1613727458.163733000","description":"Error received from peer ipv6:[::1]:50050","file":"src/core/lib/surface/call.cc","file_line":1068,"grpc_message":"Deadline Exceeded","grpc_status":4}"
+>
+None
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+	debug_error_string = "{"created":"@1613727458.665881000","description":"Error received from peer ipv6:[::1]:50050","file":"src/core/lib/surface/call.cc","file_line":1068,"grpc_message":"Deadline Exceeded","grpc_status":4}"
+>
+None
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+	debug_error_string = "{"created":"@1613727459.168061000","description":"Error received from peer ipv6:[::1]:50050","file":"src/core/lib/surface/call.cc","file_line":1068,"grpc_message":"Deadline Exceeded","grpc_status":4}"
+>
+None
+Write result:
+<_InactiveRpcError of RPC that terminated with:
+	status = StatusCode.DEADLINE_EXCEEDED
+	details = "Deadline Exceeded"
+	debug_error_string = "{"created":"@1613727459.672314000","description":"Error received from peer ipv6:[::1]:50050","file":"src/core/lib/surface/call.cc","file_line":1068,"grpc_message":"Deadline Exceeded","grpc_status":4}"
+>
+None
+-------------------------------------------------------------------
+List result:
+status {
+  server_id: 1
+  ok: true
+}
+entries {
+  key: "Key0"
+  value: "Value0"
+  current_version: 1
+}
+entries {
+  key: "Key1"
+  value: "Value1"
+  current_version: 1
+}
+entries {
+  key: "Key2"
+  value: "Value2"
+  current_version: 1
+}
+entries {
+  key: "Key3"
+  value: "Value3"
+  current_version: 1
+}
+entries {
+  key: "Key4"
+  value: "Value4"
+  current_version: 1
+}
+
+-------------------------------------------------------------------
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key0"
+deleted_value: "Value0"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key1"
+deleted_value: "Value1"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key2"
+deleted_value: "Value2"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key3"
+deleted_value: "Value3"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key4"
+deleted_value: "Value4"
+deleted_version: 1
+
+
+PART-B:
+(grpc) Anmols-MacBook-Air:goup9 siddharth$ python client.py -timeout 1.5
+Write result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key0"
+new_version: 1
+
+Write result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key1"
+new_version: 1
+
+Write result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key2"
+new_version: 1
+
+Write result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key3"
+new_version: 1
+
+Write result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key4"
+new_version: 1
+
+-------------------------------------------------------------------
+List result:
+status {
+  server_id: 1
+  ok: true
+}
+entries {
+  key: "Key0"
+  value: "Value0"
+  current_version: 1
+}
+entries {
+  key: "Key1"
+  value: "Value1"
+  current_version: 1
+}
+entries {
+  key: "Key2"
+  value: "Value2"
+  current_version: 1
+}
+entries {
+  key: "Key3"
+  value: "Value3"
+  current_version: 1
+}
+entries {
+  key: "Key4"
+  value: "Value4"
+  current_version: 1
+}
+
+-------------------------------------------------------------------
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key0"
+deleted_value: "Value0"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key1"
+deleted_value: "Value1"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key2"
+deleted_value: "Value2"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key3"
+deleted_value: "Value3"
+deleted_version: 1
+
+Delete result:
+status {
+  server_id: 1
+  ok: true
+}
+key: "Key4"
+deleted_value: "Value4"
+deleted_version: 1
